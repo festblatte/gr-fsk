@@ -1,0 +1,60 @@
+<?xml version="1.0"?>
+<block>
+  <name>fsk_demod_c_ff</name>
+  <key>fsk_fsk_demod_c_ff</key>
+  <category>[fsk]</category>
+  <import>import fsk</import>
+  <make>fsk.fsk_demod_c_ff($sampPerSym, $f1, $f2, $samp_rate)</make>
+  <!-- Make one 'param' node for every Parameter you want settable from the GUI.
+       Sub-nodes:
+       * name
+       * key (makes the value accessible as $keyname, e.g. in the make node)
+       * type -->
+  <param>
+    <name>Samples per Symbol</name>
+    <key>sampPerSym</key>
+    <type>int</type>
+  </param>
+
+  <param>
+    <name>Frequency 1</name>
+    <key>f1</key>
+    <type>int</type>
+  </param>
+
+  <param>
+    <name>Frequency 2</name>
+    <key>f2</key>
+    <type>int</type>
+  </param>
+
+  <param>
+    <name>Sample Rate</name>
+    <key>samp_rate</key>
+    <type>int</type>
+  </param>
+  <!-- Make one 'sink' node per input. Sub-nodes:
+       * name (an identifier for the GUI)
+       * type
+       * vlen
+       * optional (set to 1 for optional inputs) -->
+  <sink>
+    <name>in</name>
+    <type>complex</type>
+  </sink>
+
+  <!-- Make one 'source' node per output. Sub-nodes:
+       * name (an identifier for the GUI)
+       * type
+       * vlen
+       * optional (set to 1 for optional inputs) -->
+  <source>
+    <name>out0</name>
+    <type>float</type>
+  </source>
+
+  <source>
+    <name>out1</name>
+    <type>float</type>
+  </source>
+</block>
