@@ -23,5 +23,5 @@
 ########################################################################
 install(FILES
     api.h
-    DESTINATION include/fsk
+    clock_recovery_mm_ff.h DESTINATION include/fsk
 )

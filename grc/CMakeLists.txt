@@ -20,5 +20,6 @@
 install(FILES
     fsk_fsk_mod_py_bc.xml
     fsk_fsk_demod_c_ff.xml
-    fsk_fsk_snr_ff_f.xml DESTINATION share/gnuradio/grc/blocks
+    fsk_fsk_snr_ff_f.xml
+    fsk_clock_recovery_mm_ff.xml DESTINATION share/gnuradio/grc/blocks
 )

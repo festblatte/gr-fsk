@@ -45,15 +45,19 @@ class fsk_snr_ff_f(gr.sync_block):
 
         for i in range(0,len(in0)):
 
-            self.d_min = (1-self.omega) * self.d_min + self.omega * abs(in0[i]*in0[i] - in1[i]*in1[i])
-            self.d_plus = (1-self.omega) * self.d_plus + self.omega * (in0[i]*in0[i] + in1[i]*in1[i])
+            #self.d_min = (1-self.omega) * self.d_min + self.omega * abs(in0[i]*in0[i] - in1[i]*in1[i])
+            #self.d_plus = (1-self.omega) * self.d_plus + self.omega * (in0[i]*in0[i] + in1[i]*in1[i])
+
+            self.d_min = (1-self.omega) * self.d_min + self.omega * abs(in0[i] - in1[i])
+            self.d_plus = (1-self.omega) * self.d_plus + self.omega * (in0[i] + in1[i])
 
             x = (self.d_plus - self.d_min)
 
             if x != 0:
-                snr = 2 * self.d_min / x
+                snr = 2* self.d_min / x
             else:
                 out[i] = 0
+                continue
             if snr != 0:
                 out[i] = 10 * numpy.log10(snr)
             else:

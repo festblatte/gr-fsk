@@ -27,6 +27,7 @@ include_directories(${Boost_INCLUDE_DIR})
 link_directories(${Boost_LIBRARY_DIRS})
 
 list(APPEND fsk_sources
+    clock_recovery_mm_ff_impl.cc
 )
 
 set(fsk_sources "${fsk_sources}" PARENT_SCOPE)

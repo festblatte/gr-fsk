@@ -67,9 +67,11 @@ class fsk_demod_c_ff(gr.sync_block):
 
             sigEnergy = numpy.absolute(integ)
 
-            out0[i] = sigEnergy[0] 
+            sumEnergy = sigEnergy[0] + sigEnergy[1]
 
-            out1[i] = sigEnergy[1]
+            out0[i] = sigEnergy[0] / sumEnergy
+
+            out1[i] = sigEnergy[1] / sumEnergy
 
             self.t = self.t + self.dt
         
