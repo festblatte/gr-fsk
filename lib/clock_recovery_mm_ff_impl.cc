@@ -28,6 +28,7 @@
 #include <gnuradio/io_signature.h>
 #include <gnuradio/math.h>
 #include <stdexcept>
+#include <complex>
 
 namespace gr {
   namespace fsk {
@@ -47,11 +48,13 @@ namespace gr {
       float mu, float gain_mu,
       float omega_relative_limit)
     : block("clock_recovery_mm_ff",
-      io_signature::make(3, 3, sizeof(float)),
-      io_signature::make(3, 3, sizeof(float))),
+      io_signature::make2(3, 3, sizeof(float),sizeof(gr_complex)),
+      io_signature::make2(3, 3, sizeof(float),sizeof(gr_complex))),
     d_mu(mu), d_gain_mu(gain_mu), d_gain_omega(gain_omega),
     d_omega_relative_limit(omega_relative_limit),
-    d_last_sample(0), d_interp(new filter::mmse_fir_interpolator_ff())
+    d_last_sample(0), d_interp(new filter::mmse_fir_interpolator_ff()),
+    d_interp_c(new filter::mmse_fir_interpolator_cc()),
+    d_lastValidSymbol(gr_complex(0,0))
     {
       if(omega <  1)
        throw std::out_of_range("clock rate must be > 0");
@@ -66,6 +69,7 @@ namespace gr {
     clock_recovery_mm_ff_impl::~clock_recovery_mm_ff_impl()
     {
       delete d_interp;
+      delete d_interp_c;
     }
 
     void
@@ -99,11 +103,11 @@ namespace gr {
    gr_vector_void_star &output_items)
   {
     const float *in = (const float *)input_items[0];
-    const float *in1 = (const float *)input_items[1];
-    const float *in2 = (const float *)input_items[2];
+    const gr_complex *in1 = (const gr_complex *)input_items[1];
+    const gr_complex *in2 = (const gr_complex *)input_items[2];
     float *out = (float *)output_items[0];
-    float *out1 = (float *)output_items[1];
-    float *out2 = (float *)output_items[2];
+    gr_complex *out1 = (gr_complex *)output_items[1];
+    gr_complex *out2 = (gr_complex *)output_items[2];
 
     int ii = 0; // input index
     int oo = 0; // output index
@@ -113,8 +117,8 @@ namespace gr {
       while(oo < noutput_items && ii < ni ) {
 	     // produce output sample
         out[oo] = d_interp->interpolate(&in[ii], d_mu);
-        out1[oo] = d_interp->interpolate(&in1[ii], d_mu);
-        out2[oo] = d_interp->interpolate(&in2[ii], d_mu);
+        out1[oo] = d_interp_c->interpolate(&in1[ii], d_mu);
+        out2[oo] = d_interp_c->interpolate(&in2[ii], d_mu);
         
         mm_val = slice(d_last_sample) * out[oo] - slice(out[oo]) * d_last_sample;
         d_last_sample = out[oo];
@@ -122,6 +126,11 @@ namespace gr {
         d_omega = d_omega + d_gain_omega * mm_val;
         d_omega = d_omega_mid + gr::branchless_clip(d_omega-d_omega_mid, d_omega_lim);
         d_mu = d_mu + d_omega + d_gain_mu * mm_val;
+
+        if(out[oo] > 0 && oo > 0){
+          gr_complex diff = out2[oo] - d_lastValidSymbol;
+          float angle = std::arg(diff);
+        }
 
         ii += (int)floor(d_mu);
         d_mu = d_mu - floor(d_mu);

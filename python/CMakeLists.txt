@@ -34,7 +34,8 @@ GR_PYTHON_INSTALL(
     __init__.py
     fsk_mod_py_bc.py
     fsk_demod_c_ff.py
-    fsk_snr_ff_f.py DESTINATION ${GR_PYTHON_DIR}/fsk
+    fsk_snr_ff_f.py
+    DESTINATION ${GR_PYTHON_DIR}/fsk
 )
 
 ########################################################################

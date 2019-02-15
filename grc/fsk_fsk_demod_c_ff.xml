@@ -50,11 +50,11 @@
        * optional (set to 1 for optional inputs) -->
   <source>
     <name>out0</name>
-    <type>float</type>
+    <type>complex</type>
   </source>
 
   <source>
     <name>out1</name>
-    <type>float</type>
+    <type>complex</type>
   </source>
 </block>

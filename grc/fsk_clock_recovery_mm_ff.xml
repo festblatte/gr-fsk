@@ -50,11 +50,11 @@
     </sink>
     <sink>
         <name>in1</name>
-        <type>float</type>
+        <type>complex</type>
     </sink>
     <sink>
         <name>in2</name>
-        <type>float</type>
+        <type>complex</type>
     </sink>
     <source>
         <name>out</name>
@@ -62,10 +62,10 @@
     </source>
     <source>
         <name>out1</name>
-        <type>float</type>
+        <type>complex</type>
     </source>
     <source>
         <name>out2</name>
-        <type>float</type>
+        <type>complex</type>
     </source>
 </block>

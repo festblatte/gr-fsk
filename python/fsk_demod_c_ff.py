@@ -43,7 +43,7 @@ class fsk_demod_c_ff(gr.sync_block):
         gr.sync_block.__init__(self,
             name="fsk_demod_c_ff",
             in_sig=[numpy.complex64],
-            out_sig=[numpy.float32, numpy.float32])
+            out_sig=[numpy.complex64, numpy.complex64])
 
 
     def work(self, input_items, output_items):
@@ -69,9 +69,10 @@ class fsk_demod_c_ff(gr.sync_block):
 
             sumEnergy = sigEnergy[0] + sigEnergy[1]
 
-            out0[i] = sigEnergy[0] / sumEnergy
 
-            out1[i] = sigEnergy[1] / sumEnergy
+            out0[i] = integ[0] / sumEnergy
+
+            out1[i] = integ[1] / sumEnergy
 
             self.t = self.t + self.dt
         

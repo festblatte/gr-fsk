@@ -25,6 +25,7 @@
 
 #include <fsk/clock_recovery_mm_ff.h>
 #include <gnuradio/filter/mmse_fir_interpolator_ff.h>
+#include <gnuradio/filter/mmse_fir_interpolator_cc.h>
 
 namespace gr {
   namespace fsk {
@@ -63,8 +64,11 @@ namespace gr {
       float d_omega_mid;            // average omega
       float d_omega_lim;            // actual omega clipping limit
 
+      gr_complex d_lastValidSymbol;
+
       float d_last_sample;
       filter::mmse_fir_interpolator_ff *d_interp;
+      filter::mmse_fir_interpolator_cc *d_interp_c;
 
       bool d_verbose;
     };
